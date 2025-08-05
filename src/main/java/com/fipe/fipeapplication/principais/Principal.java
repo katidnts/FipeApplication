@@ -77,13 +77,13 @@ public class Principal {
                 .filter(m -> m.toString().toUpperCase().contains(buscaCarros.toUpperCase(
                 )))
                 .collect(Collectors.toList());
-        System.out.println("Modelos com mesmo nome:");
+        System.out.println("Modelos com esse nome:");
         for (DadosModelos modelos : modelosDeCarroComMesmoNOme) {
             System.out.println("Cód: " + modelos.codigo() + " - Nome: " + modelos.modelo());
         }
 
 //        modelosDeCarroComMesmoNOme.forEach(System.out::println);
-            return modelosDeCarroComMesmoNOme;
+        return modelosDeCarroComMesmoNOme;
 //                .orElseThrow(() -> new IllegalArgumentException("Modelo não encontrado"));
     }
 

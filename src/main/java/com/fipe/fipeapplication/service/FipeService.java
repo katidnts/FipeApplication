@@ -8,6 +8,7 @@ import com.fipe.fipeapplication.models.DadosModelos;
 import com.fipe.fipeapplication.models.ModelosResponse;
 import com.fipe.fipeapplication.principais.Principal;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 public class FipeService {
