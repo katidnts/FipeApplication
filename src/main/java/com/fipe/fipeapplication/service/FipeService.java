@@ -19,20 +19,20 @@ public class FipeService {
 
 
     public List<DadosMarcas> buscaDadosMarcas(String busca) {
-        var json = client.obterDados(URL_FIPE + busca + PATH_MARCAS);
+        var json = client.obterDados(URL_FIPE + busca);
         List<DadosMarcas> marcas = conversor.obterDados(json, new TypeReference<List<DadosMarcas>>() {
         });
         return marcas;
     }
 
     public ModelosResponse buscaDadosModelos(String busca, String buscaMarca) {
-        String jsonModelos = client.obterDados(URL_FIPE + busca + PATH_MARCAS + "/" + buscaMarca + "/modelos");
+        String jsonModelos = client.obterDados(URL_FIPE + busca + "/" + buscaMarca + "/modelos");
         ModelosResponse resposta = conversor.obterDados(jsonModelos, ModelosResponse.class);
         return resposta;
     }
 
     public List<Ano> buscaListaDeAnos(String busca, String buscaMarca, String buscaCarros) {
-        String jsonCarros1 = client.obterDados(URL_FIPE + busca + PATH_MARCAS + "/" + buscaMarca + "/modelos/" + buscaCarros + "/anos");
+        String jsonCarros1 = client.obterDados(URL_FIPE + busca + "/" + buscaMarca + "/modelos/" + buscaCarros + "/anos");
         List<Ano> anos = conversor.obterDados(jsonCarros1, new TypeReference<List<Ano>>() {
         });
         return anos;
@@ -42,7 +42,7 @@ public class FipeService {
         String jsonCarros;
 
             jsonCarros = client.obterDados(
-                    URL_FIPE + busca + PATH_MARCAS + "/" + buscaMarca + "/modelos/" + buscaCarros + "/anos/" + codigo);
+                    URL_FIPE + busca + "/" + buscaMarca + "/modelos/" + buscaCarros + "/anos/" + codigo);
 
         DadosModelos modelo = conversor.obterDados(jsonCarros, DadosModelos.class);
         return modelo;

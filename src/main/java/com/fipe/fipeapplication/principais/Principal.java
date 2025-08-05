@@ -1,16 +1,13 @@
 package com.fipe.fipeapplication.principais;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fipe.fipeapplication.models.*;
 
-import com.fipe.fipeapplication.service.ConverteDados;
-import com.fipe.fipeapplication.service.FipeClient;
 import com.fipe.fipeapplication.service.FipeService;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Principal {
 
@@ -20,12 +17,26 @@ public class Principal {
     public void mostraMenu() {
 
         System.out.println("****OPÇÕES****");
-        System.out.println("Carros");
-        System.out.println("Motos");
-        System.out.println("Caminhões");
+        System.out.println("Carro");
+        System.out.println("Moto");
+        System.out.println("Caminhão");
         System.out.println("Informe qual modelo você deseja pesquisar: ");
         var busca = SCANNER.nextLine();
-        buscaEImprimeMarcas(busca);
+
+
+        if (busca.toLowerCase().contains("carro")) {
+            busca = "carros/marcas";
+            buscaEImprimeMarcas(busca);
+        } else if (busca.toLowerCase().contains("mot")) {
+            busca = "motos/marcas";
+            buscaEImprimeMarcas(busca);
+        } else if (busca.toLowerCase().contains("caminh")) {
+            busca = "caminhoes/marcas";
+            buscaEImprimeMarcas(busca);
+        }
+
+//        buscaEImprimeMarcas(busca);
+
 
         System.out.println("Informe o código da marca para consulta: ");
         var buscaMarca = SCANNER.nextLine();
@@ -35,9 +46,11 @@ public class Principal {
         System.out.println("Digite um trecho do nome do veículo para consulta? ");
         var buscaCarros = SCANNER.nextLine();
 
+        List<DadosModelos> modelosComMesmoNome = buscaListaDeModelosEspecificos(todosModelosDaMarca, buscaCarros, busca, buscaMarca);
 
-        String codigoDoModelo = buscaModelo(todosModelosDaMarca, buscaCarros, busca, buscaMarca);
-        imprimeListaAnos(busca, buscaMarca, codigoDoModelo);
+        System.out.println("Digite o código do modelo para buscar os valores de avaliação:");
+        var buscaPrecos = SCANNER.nextLine();
+        imprimeListaAnos(busca, buscaMarca, buscaPrecos);
     }
 
     private void buscaEImprimeMarcas(String busca) {
@@ -59,13 +72,19 @@ public class Principal {
         return todosModelosDaMarca;
     }
 
-    private String buscaModelo(List<DadosModelos> todosModelosDaMarca, String buscaCarros, String busca, String buscaMarca) {
-        return todosModelosDaMarca.stream()
+    private List<DadosModelos> buscaListaDeModelosEspecificos(List<DadosModelos> todosModelosDaMarca, String buscaCarros, String busca, String buscaMarca) {
+        List<DadosModelos> modelosDeCarroComMesmoNOme = todosModelosDaMarca.stream()
                 .filter(m -> m.toString().toUpperCase().contains(buscaCarros.toUpperCase(
                 )))
-                .findFirst()
-                .map(DadosModelos::codigo)
-                .orElseThrow(() -> new IllegalArgumentException("Modelo não encontrado"));
+                .collect(Collectors.toList());
+        System.out.println("Modelos com mesmo nome:");
+        for (DadosModelos modelos : modelosDeCarroComMesmoNOme) {
+            System.out.println("Cód: " + modelos.codigo() + " - Nome: " + modelos.modelo());
+        }
+
+//        modelosDeCarroComMesmoNOme.forEach(System.out::println);
+            return modelosDeCarroComMesmoNOme;
+//                .orElseThrow(() -> new IllegalArgumentException("Modelo não encontrado"));
     }
 
     private void imprimeListaAnos(String busca, String buscaMarca, String buscaCarros) {
